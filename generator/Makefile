@@ -45,6 +45,8 @@ WIENER_URL        := https://file.wiener-d.com/software/net-snmp/WIENER-CRATE-MI
 RARITAN_URL       := https://cdn.raritan.com/download/PX/v1.5.20/PDU-MIB.txt
 INFRAPOWER_URL    := https://www.austin-hughes.com/wp-content/uploads/2021/05/IPD-03-S-MIB.zip
 LIEBERT_URL       := https://www.vertiv.com/globalassets/documents/software/monitoring/lgpmib-win_rev16_299461_0.zip
+EATON_URL         := https://powerquality.eaton.com/Support/Software-Drivers/Downloads/connectivity-firmware/eaton-network-connectivity-mib-files.zip
+MGE_URL           := https://www.circitor.fr/Mibs/Mib/M/MG-SNMP-UPS-MIB.mib
 
 CYBERPOWER_VERSION := 2.10
 CYBERPOWER_URL     := https://dl4jz3rbrsfum.cloudfront.net/software/CyberPower_MIB_v$(CYBERPOWER_VERSION).MIB.zip
@@ -62,6 +64,7 @@ clean:
 		$(MIBDIR)/.paloalto_panos \
 		$(MIBDIR)/.synology \
 		$(MIBDIR)/.kemp-lm
+	        $(MIBDIR)/.eaton
 
 generator: *.go
 	go build
@@ -96,6 +99,7 @@ mibs: mib-dir \
   $(MIBDIR)/ARISTA-ENTITY-SENSOR-MIB \
   $(MIBDIR)/ARISTA-SMI-MIB \
   $(MIBDIR)/ARISTA-SW-IP-FORWARDING-MIB \
+  $(MIBDIR)/.eaton \
   $(MIBDIR)/ENTITY-MIB \
   $(MIBDIR)/ENTITY-SENSOR-MIB \
   $(MIBDIR)/ENTITY-STATE-MIB \
@@ -125,7 +129,8 @@ mibs: mib-dir \
   $(MIBDIR)/PDU-MIB.txt \
   $(MIBDIR)/Infrapower-MIB.mib \
   $(MIBDIR)/LIEBERT_GP_PDU.MIB \
-  $(MIBDIR)/CyberPower.MIB
+  $(MIBDIR)/CyberPower.MIB \
+  $(MIBDIR)/MG-SNMP-UPS-MIB
 
 mib-dir:
 	@mkdir -p -v $(MIBDIR)
@@ -153,6 +158,18 @@ $(MIBDIR)/AIRESPACE-REF-MIB:
 $(MIBDIR)/AIRESPACE-WIRELESS-MIB:
 	@echo ">> Downloading Cisco AIRESPACE-WIRELESS-MIB"
 	@curl $(CURL_OPTS) -o $(MIBDIR)/AIRESPACE-WIRELESS-MIB "$(CISCO_URL)/AIRESPACE-WIRELESS-MIB.my"
+
+$(MIBDIR)/.eaton:
+	$(eval TMP := $(shell mktemp))
+	@echo ">> Downloading Eaton"
+	@curl $(CURL_OPTS) -o $(TMP) $(EATON_URL)
+	@unzip -j -d $(MIBDIR) $(TMP) *MIB *mib *OIDS
+	@rm -v $(TMP)
+	@touch $(MIBDIR)/.eaton
+
+$(MIBDIR)/MG-SNMP-UPS-MIB:
+	@echo ">> Downloading Merlin Gerin MG-SNMP-UPS-MIB"
+	@curl $(CURL_OPTS) -o $(MIBDIR)/MG-SNMP-UPS-MIB "$(MGE_URL)"
 
 $(MIBDIR)/ENTITY-MIB:
 	@echo ">> Downloading Cisco ENTITY-MIB"

@@ -94,6 +94,33 @@ modules:
       upsAdvBatteryChargerStatus:
         type: EnumAsStateSet
 
+# Eaton UPS
+  eaton_ups:
+    version: 1
+    walk:
+      - sysDescr
+      - sysName
+      - sysLocation
+      - sysContact
+      - sysUpTime
+      - xupsMIB
+      - upsMIB
+
+# Merlin Gerin (MGE) UPS
+  mge_ups:
+    version: 1
+    walk:
+      - sysDescr
+      - sysName
+      - sysLocation
+      - sysContact
+      - sysUpTime
+      - upsmgIdent
+      - upsmgBattery
+      - upsmgInput
+      - upsmgOutput
+      - upsmgEnviron
+
 # ServerTech Sentry 3 MIB
 #
 # Used by ServerTech PDUs
