@@ -47,6 +47,7 @@ INFRAPOWER_URL    := https://www.austin-hughes.com/wp-content/uploads/2021/05/IP
 LIEBERT_URL       := https://www.vertiv.com/globalassets/documents/software/monitoring/lgpmib-win_rev16_299461_0.zip
 EATON_URL         := https://powerquality.eaton.com/Support/Software-Drivers/Downloads/connectivity-firmware/eaton-network-connectivity-mib-files.zip
 MGE_URL           := https://www.circitor.fr/Mibs/Mib/M/MG-SNMP-UPS-MIB.mib
+EES_URL           := https://www.circitor.fr/Mibs/Mib/E/EES-POWER-MIB.mib
 
 CYBERPOWER_VERSION := 2.10
 CYBERPOWER_URL     := https://dl4jz3rbrsfum.cloudfront.net/software/CyberPower_MIB_v$(CYBERPOWER_VERSION).MIB.zip
@@ -130,7 +131,8 @@ mibs: mib-dir \
   $(MIBDIR)/Infrapower-MIB.mib \
   $(MIBDIR)/LIEBERT_GP_PDU.MIB \
   $(MIBDIR)/CyberPower.MIB \
-  $(MIBDIR)/MG-SNMP-UPS-MIB
+  $(MIBDIR)/MG-SNMP-UPS-MIB \
+  $(MIBDIR)/EES-POWER-MIB
 
 mib-dir:
 	@mkdir -p -v $(MIBDIR)
@@ -170,6 +172,10 @@ $(MIBDIR)/.eaton:
 $(MIBDIR)/MG-SNMP-UPS-MIB:
 	@echo ">> Downloading Merlin Gerin MG-SNMP-UPS-MIB"
 	@curl $(CURL_OPTS) -o $(MIBDIR)/MG-SNMP-UPS-MIB "$(MGE_URL)"
+
+$(MIBDIR)/EES-POWER-MIB:
+	@echo ">> Downloading Emerson Energy Systems EES-POWER-MIB"
+	@curl $(CURL_OPTS) -o $(MIBDIR)/EES-POWER-MIB "$(EES_URL)"
 
 $(MIBDIR)/ENTITY-MIB:
 	@echo ">> Downloading Cisco ENTITY-MIB"

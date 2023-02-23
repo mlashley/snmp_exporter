@@ -120,6 +120,17 @@ modules:
       - upsmgInput
       - upsmgOutput
       - upsmgEnviron
+        
+# Emerson Energy Systems DC Plant
+  emerson_dcplant:
+    version: 2
+    walk:
+      #      - sysDescr # In our system this returns a non-UTF-8 string - and go-snmp pukes (net-snmp seems ok with it..)
+      - sysName
+      - sysLocation
+      - sysContact
+      - sysUpTime
+      - ees
 
 # ServerTech Sentry 3 MIB
 #
